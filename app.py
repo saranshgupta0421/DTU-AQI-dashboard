@@ -35,13 +35,16 @@ app.layout = html.Div([
         Output("pollutant-graph","figure"),
         [Input("pollutant-dropdown","value"), Input("date-picker-range","start_date"), Input("date-picker-range","end_date")]
     )
-def update_chart(selected_pollutant,start_date,end_date):
+def update_chart(selected_pollutant, start_date, end_date):
+    start = pd.to_datetime(start_date).tz_localize(df["datetimeLocal"].dt.tz)
+    end = pd.to_datetime(end_date).tz_localize(df["datetimeLocal"].dt.tz)
+
     filtered = df[
         (df["parameter"] == selected_pollutant) &
-        (df["datetimeLocal"] >= start_date) &
-        (df["datetimeLocal"] <= end_date)
+        (df["datetimeLocal"] >= start) &
+        (df["datetimeLocal"] <= end)
     ]
-    fig = px.line(filtered, x="datetimeLocal", y="value")
+    fig = px.line(filtered, x="datetimeLocal", y="value", title=f"{selected_pollutant} over time")
     return fig
 if __name__ == "__main__":
     app.run(debug=True)
