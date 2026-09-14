@@ -4,10 +4,6 @@ import pandas as pd
 import plotly.express as px
 from dash import Dash, dcc, html, Input, Output
 
-df = pd.read_csv("dtu_data_cleaned.csv")
-df["datetimeLocal"]=pd.to_datetime(df["datetimeLocal"])
-
-
 app = Dash(__name__)
 server = app.server
 def fetch_live_data():
